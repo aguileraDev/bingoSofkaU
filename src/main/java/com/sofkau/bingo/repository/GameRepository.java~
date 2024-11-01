@@ -1,0 +1,5 @@
+package com.sofkau.bingo.repository;/**
+ *
+ * @author Manuel Aguilera / @aguileradev
+*/public interface GameRepository {
+}
