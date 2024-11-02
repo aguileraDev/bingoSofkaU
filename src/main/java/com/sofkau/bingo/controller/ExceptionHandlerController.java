@@ -1,5 +1,6 @@
 package com.sofkau.bingo.controller;
 
+import com.sofkau.bingo.utility.exceptions.RegisterException;
 import feign.FeignException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,13 @@ public class ExceptionHandlerController {
     public ResponseEntity handleFeignException(FeignException e) {
         logger.error(e.getMessage());
         return ResponseEntity.badRequest().build();
+    }
+
+    @ExceptionHandler(RegisterException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity handleRegisterException(RegisterException e) {
+        logger.error(e.getMessage());
+        return ResponseEntity.badRequest().body(e.getMessage());
     }
 
 }

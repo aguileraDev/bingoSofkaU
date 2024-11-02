@@ -1,16 +1,15 @@
 package com.sofkau.bingo.controller;
 
-<<<<<<< HEAD
+
 import com.sofkau.bingo.dto.CreatePlayerDto;
+import com.sofkau.bingo.dto.RegisterLoginDto;
 import com.sofkau.bingo.model.Game;
 import com.sofkau.bingo.services.BingoService;
 import com.sofkau.bingo.services.PlayerService;
-=======
-import com.sofkau.bingo.model.Game;
-import com.sofkau.bingo.services.BingoService;
->>>>>>> a92153e2feac9850a5065757de8e56c4e867cb9e
+
 import com.sofkau.bingo.utility.http.Response;
 
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ public class GameController {
 
     private final static Logger logger = LoggerFactory.getLogger(GameController.class);
     private final BingoService bingoService;
-<<<<<<< HEAD
+
     private final PlayerService playerService;
     private Response response;
 
@@ -38,14 +37,6 @@ public class GameController {
         this.bingoService = bingoService;
         this.response = response;
         this.playerService = playerService;
-=======
-    private Response response;
-
-    @Autowired
-    public GameController(BingoService bingoService, Response response) {
-        this.response = response;
-        this.bingoService = bingoService;
->>>>>>> a92153e2feac9850a5065757de8e56c4e867cb9e
     }
 
     @PostMapping("/start")
@@ -58,7 +49,7 @@ public class GameController {
         return ResponseEntity.created(uri).body(response);
     }
 
-<<<<<<< HEAD
+
     @GetMapping("/player/{id}")
     public ResponseEntity<Response> getUser(@RequestHeader("Authorization") String authorizationHeader,
                                             @PathVariable("id") String id) {
@@ -69,13 +60,19 @@ public class GameController {
     }
 
     @PostMapping("/player")
-    public ResponseEntity<Response> registerPlayer(@RequestBody CreatePlayerDto createPlayerDto) {
+    public ResponseEntity<Response> registerPlayer(@RequestBody @Valid CreatePlayerDto createPlayerDto) {
         response.restart();
         response.data = playerService.registerPlayer(createPlayerDto);
         response.error = false;
         return ResponseEntity.ok(response);
     }
-=======
->>>>>>> a92153e2feac9850a5065757de8e56c4e867cb9e
+
+    @PostMapping("/player/login")
+    public ResponseEntity<Response> loginPlayer(@RequestBody @Valid RegisterLoginDto registerLoginDto) {
+        response.restart();
+        response.data = playerService.loginPlayer(registerLoginDto);
+        response.error = false;
+        return ResponseEntity.ok(response);
+    }
 
 }
