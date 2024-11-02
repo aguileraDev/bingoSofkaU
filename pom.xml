@@ -68,15 +68,19 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
+<<<<<<< HEAD
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-openfeign</artifactId>
 		</dependency>
 		<dependency>
+=======
+>>>>>>> a92153e2feac9850a5065757de8e56c4e867cb9e
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+<<<<<<< HEAD
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -88,6 +92,9 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+=======
+
+>>>>>>> a92153e2feac9850a5065757de8e56c4e867cb9e
 	<build>
 		<plugins>
 			<plugin>

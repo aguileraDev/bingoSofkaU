@@ -1,9 +1,14 @@
 package com.sofkau.bingo.controller;
 
+<<<<<<< HEAD
 import com.sofkau.bingo.dto.CreatePlayerDto;
 import com.sofkau.bingo.model.Game;
 import com.sofkau.bingo.services.BingoService;
 import com.sofkau.bingo.services.PlayerService;
+=======
+import com.sofkau.bingo.model.Game;
+import com.sofkau.bingo.services.BingoService;
+>>>>>>> a92153e2feac9850a5065757de8e56c4e867cb9e
 import com.sofkau.bingo.utility.http.Response;
 
 import org.slf4j.Logger;
@@ -24,6 +29,7 @@ public class GameController {
 
     private final static Logger logger = LoggerFactory.getLogger(GameController.class);
     private final BingoService bingoService;
+<<<<<<< HEAD
     private final PlayerService playerService;
     private Response response;
 
@@ -32,6 +38,14 @@ public class GameController {
         this.bingoService = bingoService;
         this.response = response;
         this.playerService = playerService;
+=======
+    private Response response;
+
+    @Autowired
+    public GameController(BingoService bingoService, Response response) {
+        this.response = response;
+        this.bingoService = bingoService;
+>>>>>>> a92153e2feac9850a5065757de8e56c4e867cb9e
     }
 
     @PostMapping("/start")
@@ -44,6 +58,7 @@ public class GameController {
         return ResponseEntity.created(uri).body(response);
     }
 
+<<<<<<< HEAD
     @GetMapping("/player/{id}")
     public ResponseEntity<Response> getUser(@RequestHeader("Authorization") String authorizationHeader,
                                             @PathVariable("id") String id) {
@@ -60,5 +75,7 @@ public class GameController {
         response.error = false;
         return ResponseEntity.ok(response);
     }
+=======
+>>>>>>> a92153e2feac9850a5065757de8e56c4e867cb9e
 
 }
