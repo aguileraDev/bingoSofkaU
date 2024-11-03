@@ -1,9 +1,9 @@
 package com.sofkau.bingo.services;
 
-import com.sofkau.bingo.dto.CreateCardDto;
-import com.sofkau.bingo.dto.GameDto;
-import com.sofkau.bingo.dto.GameResponseDto;
+import com.sofkau.bingo.dto.*;
+import com.sofkau.bingo.model.Token;
 import com.sofkau.bingo.repository.GameRepository;
+import com.sofkau.bingo.repository.TokenRepository;
 import com.sofkau.bingo.utility.exceptions.RegisterException;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
@@ -13,6 +13,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import com.sofkau.bingo.model.Game;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -24,11 +25,13 @@ public class BingoService {
     private static final Logger logger = LoggerFactory.getLogger(BingoService.class);
     private final GameRepository gameRepository;
     private final CardService cardService;
+    private final TokenRepository tokenRepository;
 
     @Autowired
-    public BingoService(GameRepository gameRepository, CardService cardService) {
+    public BingoService(GameRepository gameRepository, CardService cardService, TokenRepository tokenRepository) {
         this.gameRepository = gameRepository;
         this.cardService = cardService;
+        this.tokenRepository = tokenRepository;
     }
 
     @Transactional
@@ -71,5 +74,26 @@ public class BingoService {
 
     }
 
+    @Transactional
+    public TokenDto saveToken(Long id, CreateTokenDto createTokenDto) {
+        logger.info("Saving token");
+
+        var gameDto = getGame(id);
+
+        Optional<Token> tokenDb;
+        try{
+            tokenDb = Optional.of(tokenRepository.save(new Token(new Game(gameDto), createTokenDto)));
+        }catch (DataIntegrityViolationException e){
+            String message = "Saving token failed";
+            throw new RegisterException(message);
+        }
+        return new TokenDto(tokenDb.get());
+    }
+
+    @Transactional
+    public List<TokenDto> getTokens(Long id) {
+        logger.info("Get tokens");
+        return tokenRepository.findAllByGameId(id).stream().map(TokenDto::new).toList();
+    }
 
 }

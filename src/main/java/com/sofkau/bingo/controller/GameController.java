@@ -2,6 +2,7 @@ package com.sofkau.bingo.controller;
 
 
 import com.sofkau.bingo.dto.CreateCardDto;
+import com.sofkau.bingo.dto.CreateTokenDto;
 import com.sofkau.bingo.dto.GameResponseDto;
 import com.sofkau.bingo.model.Game;
 import com.sofkau.bingo.services.BingoService;
@@ -61,6 +62,25 @@ public class GameController {
     public ResponseEntity<Response> finishGame(@PathVariable("id") Integer id) {
         bingoService.finishGame(Long.valueOf(id));
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{id}/token")
+    public ResponseEntity<Response> saveToken(@PathVariable("id") Integer id,
+                                              @RequestBody @Valid CreateTokenDto createTokenDto) {
+
+        response.restart();
+        response.data = bingoService.saveToken(Long.valueOf(id), createTokenDto);
+        response.error = false;
+        URI uri = UriComponentsBuilder.fromUriString("/game/{id}/token").buildAndExpand(id).toUri();
+        return ResponseEntity.created(uri).body(response);
+    }
+
+    @GetMapping("/{id}/token")
+    public ResponseEntity<Response> getTokens(@PathVariable("id") Integer id) {
+        response.restart();
+        response.data = bingoService.getTokens(Long.valueOf(id));
+        response.error = false;
+        return ResponseEntity.ok(response);
     }
 
 

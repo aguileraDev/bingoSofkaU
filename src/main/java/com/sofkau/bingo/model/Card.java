@@ -35,9 +35,9 @@ public class Card implements Serializable {
 
     @Column
     private String playerId;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "game_id",nullable = false)
-    @JsonManagedReference
+    @JsonBackReference
     private Game game;
 
 
