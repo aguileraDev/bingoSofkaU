@@ -2,10 +2,10 @@ package com.sofkau.bingo.controller;
 
 
 import com.sofkau.bingo.dto.CreateCardDto;
+import com.sofkau.bingo.dto.GameResponseDto;
 import com.sofkau.bingo.model.Game;
 import com.sofkau.bingo.services.BingoService;
 import com.sofkau.bingo.services.CardService;
-import com.sofkau.bingo.services.PlayerService;
 
 import com.sofkau.bingo.utility.http.Response;
 
@@ -39,21 +39,30 @@ public class GameController {
     }
 
     @PostMapping("/start")
-    public ResponseEntity<Response> startGame() {
+    public ResponseEntity<Response> startGame(@RequestBody @Valid CreateCardDto createCardDto) {
         response.restart();
-        Game game = new Game(bingoService.startGame());
-        URI uri = UriComponentsBuilder.fromUriString("/game/{id}").buildAndExpand(game.getId()).toUri();
+        GameResponseDto game = bingoService.startGame(createCardDto);
+        URI uri = UriComponentsBuilder.fromUriString("/game/{id}").buildAndExpand(game.id()).toUri();
         response.data = game;
         response.error = false;
         return ResponseEntity.created(uri).body(response);
     }
 
-    @PostMapping("/cardboard/{id}")
-    public ResponseEntity<Response> createCard(@PathVariable("id") Integer id, @RequestBody @Valid CreateCardDto createCardDto) {
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Response> getGame(@PathVariable("id") Integer id) {
         response.restart();
-        response.data = cardService.createCard(id, createCardDto);
+        response.data = bingoService.getGame(Long.valueOf(id));
         response.error = false;
         return ResponseEntity.ok(response);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Response> finishGame(@PathVariable("id") Integer id) {
+        bingoService.finishGame(Long.valueOf(id));
+        return ResponseEntity.noContent().build();
+    }
+
+
 
 }

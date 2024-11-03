@@ -27,6 +27,13 @@ public class ExceptionHandlerController {
         return ResponseEntity.badRequest().build();
     }
 
+    @ExceptionHandler(FeignException.Unauthorized.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ResponseEntity handleFeignUnauthorizedException(FeignException e) {
+        logger.error(e.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
     @ExceptionHandler(RegisterException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity handleRegisterException(RegisterException e) {

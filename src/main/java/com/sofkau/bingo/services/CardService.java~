@@ -87,7 +87,7 @@ public class CardService {
         HashSet<Integer> values = new HashSet<>();
 
         while (values.size() < 5) {
-            int temp = (int) (Math.random() * (numberMax - numberMin + 1)) + numberMin;
+            int temp = (int) (Math.random() * (numberMax - numberMin + 1)) + numberMin; 
             values.add(temp);
         }
 

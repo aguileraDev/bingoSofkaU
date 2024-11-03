@@ -2,6 +2,9 @@ package com.sofkau.bingo.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.sofkau.bingo.dto.CardDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,12 +37,19 @@ public class Card implements Serializable {
     private String playerId;
     @ManyToOne
     @JoinColumn(name = "game_id",nullable = false)
+    @JsonManagedReference
     private Game game;
 
 
     @Column(name = "numbers", columnDefinition = "integer[]")
     private List<Integer> numbers = new ArrayList<>();
 
+    public Card(CardDto cardDto){
+        this.id = cardDto.id();
+        this.playerId = cardDto.player();
+        this.game = cardDto.game();
+        this.numbers = cardDto.numbers();
+    }
     public Card(Game game, String player, List<Integer> allDataColumns) {
         this.playerId = player;
         this.game = game;

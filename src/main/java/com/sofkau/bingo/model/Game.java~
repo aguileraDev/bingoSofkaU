@@ -40,6 +40,7 @@ public class Game implements Serializable {
     private ZonedDateTime createdAt;
 
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference()
     private List<Card> cards = new ArrayList<>();
 
     public Game() {
