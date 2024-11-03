@@ -1,7 +1,7 @@
 package com.sofkau.bingo.services;
 
 import com.sofkau.bingo.dto.CardDto;
-import com.sofkau.bingo.dto.CreateCardDto;
+import com.sofkau.bingo.dto.RegisterPlayerDto;
 import com.sofkau.bingo.model.Card;
 import com.sofkau.bingo.model.Game;
 import com.sofkau.bingo.repository.CardRepository;
@@ -38,7 +38,7 @@ public class CardService {
     }
 
     @Transactional
-    public CardDto createCard(Long id, CreateCardDto createCardDto) {
+    public CardDto createCard(Long id, RegisterPlayerDto registerPlayerDto) {
         Optional<Game> game;
         Optional<Card> card;
         try {
@@ -71,7 +71,7 @@ public class CardService {
         logger.info("Create card numbers");
 
         try {
-            card = Optional.of(cardRepository.save(new Card(game.get(), createCardDto.playerId(), allDataColumns)));
+            card = Optional.of(cardRepository.save(new Card(game.get(), registerPlayerDto.playerId(), allDataColumns)));
         } catch (DataIntegrityViolationException e) {
             String message = "Create card failed";
             throw new RegisterException(message);

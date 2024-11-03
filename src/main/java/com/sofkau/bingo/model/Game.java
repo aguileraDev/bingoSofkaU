@@ -48,6 +48,10 @@ public class Game implements Serializable {
     @JsonManagedReference
     private List<Token> tokens = new ArrayList<>();
 
+    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Winner> winners = new ArrayList<>();
+
     public Game() {
         this.isActive = true;
         this.isFinished = false;

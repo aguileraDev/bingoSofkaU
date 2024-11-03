@@ -1,10 +1,9 @@
 package com.sofkau.bingo.controller;
 
 
-import com.sofkau.bingo.dto.CreateCardDto;
+import com.sofkau.bingo.dto.RegisterPlayerDto;
 import com.sofkau.bingo.dto.CreateTokenDto;
 import com.sofkau.bingo.dto.GameResponseDto;
-import com.sofkau.bingo.model.Game;
 import com.sofkau.bingo.services.BingoService;
 import com.sofkau.bingo.services.CardService;
 
@@ -40,9 +39,9 @@ public class GameController {
     }
 
     @PostMapping("/start")
-    public ResponseEntity<Response> startGame(@RequestBody @Valid CreateCardDto createCardDto) {
+    public ResponseEntity<Response> startGame(@RequestBody @Valid RegisterPlayerDto registerPlayerDto) {
         response.restart();
-        GameResponseDto game = bingoService.startGame(createCardDto);
+        GameResponseDto game = bingoService.startGame(registerPlayerDto);
         URI uri = UriComponentsBuilder.fromUriString("/game/{id}").buildAndExpand(game.id()).toUri();
         response.data = game;
         response.error = false;
@@ -83,6 +82,11 @@ public class GameController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/{id}/winner")
+    public ResponseEntity<Response> saveWinner(@PathVariable("id") Integer id, @RequestBody @Valid RegisterPlayerDto registerPlayerDto) {
+        bingoService.saveWinner(Long.valueOf(id), registerPlayerDto);
+        return ResponseEntity.noContent().build();
+    }
 
 
 }

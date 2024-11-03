@@ -2,8 +2,10 @@ package com.sofkau.bingo.services;
 
 import com.sofkau.bingo.dto.*;
 import com.sofkau.bingo.model.Token;
+import com.sofkau.bingo.model.Winner;
 import com.sofkau.bingo.repository.GameRepository;
 import com.sofkau.bingo.repository.TokenRepository;
+import com.sofkau.bingo.repository.WinnerRepository;
 import com.sofkau.bingo.utility.exceptions.RegisterException;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
@@ -26,16 +28,19 @@ public class BingoService {
     private final GameRepository gameRepository;
     private final CardService cardService;
     private final TokenRepository tokenRepository;
+    private final WinnerRepository winnerRepository;
 
     @Autowired
-    public BingoService(GameRepository gameRepository, CardService cardService, TokenRepository tokenRepository) {
+    public BingoService(GameRepository gameRepository, CardService cardService,
+                        TokenRepository tokenRepository, WinnerRepository winnerRepository) {
         this.gameRepository = gameRepository;
         this.cardService = cardService;
         this.tokenRepository = tokenRepository;
+        this.winnerRepository = winnerRepository;
     }
 
     @Transactional
-    public GameResponseDto startGame(CreateCardDto createCardDto) {
+    public GameResponseDto startGame(RegisterPlayerDto registerPlayerDto) {
         logger.info("Start game");
         Optional<Game> gameDb;
 
@@ -46,7 +51,7 @@ public class BingoService {
             throw new RegisterException(message);
         }
 
-        var cardDto = cardService.createCard(gameDb.get().getId(), createCardDto);
+        var cardDto = cardService.createCard(gameDb.get().getId(), registerPlayerDto);
 
         return new GameResponseDto(new GameDto(gameDb.get()), cardDto);
     }
@@ -96,4 +101,19 @@ public class BingoService {
         return tokenRepository.findAllByGameId(id).stream().map(TokenDto::new).toList();
     }
 
+    @Transactional
+    public WinnerDto saveWinner(Long id, RegisterPlayerDto registerPlayerDto){
+        logger.info("Saving winner");
+        GameDto gameDto = getGame(id);
+
+        Optional<Winner> winnerDb;
+
+        try{
+            winnerDb = Optional.of(winnerRepository.save(new Winner(new Game(gameDto), registerPlayerDto)));
+        }catch (DataIntegrityViolationException e){
+            String message = "Saving winner failed";
+            throw new RegisterException(message);
+        }
+        return new WinnerDto(winnerDb.get());
+    }
 }

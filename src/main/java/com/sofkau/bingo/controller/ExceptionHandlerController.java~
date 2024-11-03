@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.time.DateTimeException;
-
 
 /**
  * @author Manuel Aguilera / @aguileradev
@@ -50,15 +48,6 @@ public class ExceptionHandlerController {
         logger.error(e.getMessage());
         return ResponseEntity.notFound().build();
     }
-
-    @ExceptionHandler(DateTimeException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
-    public ResponseEntity handleDateTimeException(DateTimeException e){
-        logger.error(e.getMessage());
-        return ResponseEntity.status(HttpStatus.CONFLICT).build();
-    }
-
-
 
 
 }
