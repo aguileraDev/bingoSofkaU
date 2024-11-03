@@ -2,8 +2,6 @@ package com.sofkau.bingo.controller;
 
 
 import com.sofkau.bingo.dto.CreateCardDto;
-import com.sofkau.bingo.dto.CreatePlayerDto;
-import com.sofkau.bingo.dto.RegisterLoginDto;
 import com.sofkau.bingo.model.Game;
 import com.sofkau.bingo.services.BingoService;
 import com.sofkau.bingo.services.CardService;
@@ -31,14 +29,12 @@ public class GameController {
     private final static Logger logger = LoggerFactory.getLogger(GameController.class);
     private final BingoService bingoService;
     private final CardService cardService;
-    private final PlayerService playerService;
     private Response response;
 
     @Autowired
-    public GameController(BingoService bingoService, Response response, PlayerService playerService, CardService cardService) {
+    public GameController(BingoService bingoService, Response response, CardService cardService) {
         this.bingoService = bingoService;
         this.response = response;
-        this.playerService = playerService;
         this.cardService = cardService;
     }
 
@@ -50,32 +46,6 @@ public class GameController {
         response.data = game;
         response.error = false;
         return ResponseEntity.created(uri).body(response);
-    }
-
-
-    @GetMapping("/player/{id}")
-    public ResponseEntity<Response> getUser(@RequestHeader("Authorization") String authorizationHeader,
-                                            @PathVariable("id") String id) {
-        response.restart();
-        response.data = playerService.getUser(authorizationHeader, id);
-        response.error = false;
-        return ResponseEntity.ok(response);
-    }
-
-    @PostMapping("/player")
-    public ResponseEntity<Response> registerPlayer(@RequestBody @Valid CreatePlayerDto createPlayerDto) {
-        response.restart();
-        response.data = playerService.registerPlayer(createPlayerDto);
-        response.error = false;
-        return ResponseEntity.ok(response);
-    }
-
-    @PostMapping("/player/login")
-    public ResponseEntity<Response> loginPlayer(@RequestBody @Valid RegisterLoginDto registerLoginDto) {
-        response.restart();
-        response.data = playerService.loginPlayer(registerLoginDto);
-        response.error = false;
-        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/cardboard/{id}")
