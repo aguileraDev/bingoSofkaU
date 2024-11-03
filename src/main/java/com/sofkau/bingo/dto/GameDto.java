@@ -14,6 +14,6 @@ public record GameDto(
         ZonedDateTime createdAt
 ) {
     public GameDto(Game game) {
-        this(game.getGameId(), game.getIsActive(), game.getIsFinished(), game.getCreatedAt());
+        this(game.getId(), game.getIsActive(), game.getIsFinished(), game.getCreatedAt());
     }
 }

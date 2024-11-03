@@ -1,16 +1,10 @@
 package com.sofkau.bingo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sofkau.bingo.dto.GameDto;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Column;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +13,9 @@ import java.io.Serializable;
 import java.time.DateTimeException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Manuel Aguilera / @aguileradev
  */
@@ -28,6 +25,7 @@ import java.time.ZonedDateTime;
 @Setter
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
+@ToString
 public class Game implements Serializable {
 
     private static final Logger logger = LoggerFactory.getLogger(Game.class);
@@ -35,12 +33,16 @@ public class Game implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long gameId;
+    private Long id;
 
     @Column
     private Boolean isActive;
     private Boolean isFinished;
     private ZonedDateTime createdAt;
+
+    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Card> cards = new ArrayList<>();
 
     public Game() {
         this.isActive = true;
@@ -54,7 +56,7 @@ public class Game implements Serializable {
     }
 
     public Game(GameDto gameDto) {
-        this.gameId = gameDto.id();
+        this.id = gameDto.id();
         this.isActive = gameDto.isActive();
         this.isFinished = gameDto.isFinished();
         this.createdAt = gameDto.createdAt();
