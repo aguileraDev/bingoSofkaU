@@ -37,7 +37,7 @@ public class Card implements Serializable {
     private String playerId;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "game_id",nullable = false)
-    @JsonBackReference
+    @JsonIgnore
     private Game game;
 
 
@@ -47,7 +47,6 @@ public class Card implements Serializable {
     public Card(CardDto cardDto){
         this.id = cardDto.id();
         this.playerId = cardDto.player();
-        this.game = cardDto.game();
         this.numbers = cardDto.numbers();
     }
     public Card(Game game, String player, List<Integer> allDataColumns) {

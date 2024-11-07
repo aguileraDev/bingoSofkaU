@@ -1,6 +1,7 @@
 package com.sofkau.bingo.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sofkau.bingo.dto.GameDto;
 import jakarta.persistence.*;
@@ -41,7 +42,7 @@ public class Game implements Serializable {
     private ZonedDateTime createdAt;
 
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonIgnore
     private List<Card> cards = new ArrayList<>();
 
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)

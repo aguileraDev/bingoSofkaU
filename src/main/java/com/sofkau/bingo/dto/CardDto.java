@@ -10,12 +10,11 @@ import java.util.List;
  */
 public record CardDto(
     Long id,
-    Game game,
     String player,
     List<Integer> numbers
 ) {
 
     public CardDto(Card card) {
-        this(card.getId(), card.getGame(), card.getPlayerId(), card.getNumbers());
+        this(card.getId(), card.getPlayerId(), card.getNumbers());
     }
 }

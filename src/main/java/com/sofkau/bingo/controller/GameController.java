@@ -24,6 +24,7 @@ import java.net.URI;
  */
 @RestController
 @RequestMapping("/game")
+@CrossOrigin(origins = "http://localhost:4200")
 public class GameController {
 
     private final static Logger logger = LoggerFactory.getLogger(GameController.class);
@@ -48,6 +49,13 @@ public class GameController {
         return ResponseEntity.created(uri).body(response);
     }
 
+    @GetMapping("card/{id}")
+    public ResponseEntity<Response> getCardboard(@PathVariable("id") Integer id) {
+        response.restart();
+        response.data = cardService.getCardboard(Long.valueOf(id));
+        response.error = false;
+        return ResponseEntity.ok(response);
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Response> getGame(@PathVariable("id") Integer id) {
@@ -74,14 +82,21 @@ public class GameController {
         return ResponseEntity.created(uri).body(response);
     }
 
-    @GetMapping("/{id}/token")
-    public ResponseEntity<Response> getTokens(@PathVariable("id") Integer id) {
+    @GetMapping("/{id}/all/token")
+    public ResponseEntity<Response> getAllTokens(@PathVariable("id") Integer id) {
         response.restart();
         response.data = bingoService.getTokens(Long.valueOf(id));
         response.error = false;
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/token/{id}")
+    public ResponseEntity<Response> getToken(@PathVariable("id") Integer id) {
+        response.restart();
+        response.data = bingoService.getToken(Long.valueOf(id));
+        response.error = false;
+        return ResponseEntity.ok(response);
+    }
     @PostMapping("/{id}/winner")
     public ResponseEntity<Response> saveWinner(@PathVariable("id") Integer id, @RequestBody @Valid RegisterPlayerDto registerPlayerDto) {
         bingoService.saveWinner(Long.valueOf(id), registerPlayerDto);

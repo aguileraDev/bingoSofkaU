@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.net.ConnectException;
 import java.time.DateTimeException;
 
 
@@ -58,7 +59,12 @@ public class ExceptionHandlerController {
         return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }
 
-
+    @ExceptionHandler(ConnectException.class)
+    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
+    public ResponseEntity handleConnectException(ConnectException e){
+        logger.error(e.getMessage());
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
+    }
 
 
 }

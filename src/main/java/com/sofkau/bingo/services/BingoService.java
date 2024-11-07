@@ -97,10 +97,14 @@ public class BingoService {
 
     @Transactional
     public List<TokenDto> getTokens(Long id) {
-        logger.info("Get tokens");
+        logger.info("Get all tokens");
         return tokenRepository.findAllByGameId(id).stream().map(TokenDto::new).toList();
     }
-
+    @Transactional
+    public TokenDto getToken(Long id) {
+        logger.info("Get token");
+        return new TokenDto(tokenRepository.findById(id).orElseThrow());
+    }
     @Transactional
     public WinnerDto saveWinner(Long id, RegisterPlayerDto registerPlayerDto){
         logger.info("Saving winner");

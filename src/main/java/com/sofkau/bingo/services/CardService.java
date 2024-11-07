@@ -82,6 +82,13 @@ public class CardService {
         return new CardDto(card.get());
     }
 
+    @Transactional
+    public CardDto getCardboard(Long id){
+        Optional<Card> card = Optional.of(cardRepository.findByGameId(id)).orElseThrow();
+
+        return new CardDto(card.get());
+
+    }
 
     public List<Integer> generateColumn(int numberMin, int numberMax) {
         HashSet<Integer> values = new HashSet<>();

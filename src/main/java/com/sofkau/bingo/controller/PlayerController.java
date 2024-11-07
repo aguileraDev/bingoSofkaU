@@ -2,7 +2,6 @@ package com.sofkau.bingo.controller;
 
 import com.sofkau.bingo.dto.CreatePlayerDto;
 import com.sofkau.bingo.dto.RegisterLoginDto;
-import com.sofkau.bingo.model.Game;
 import com.sofkau.bingo.services.PlayerService;
 import com.sofkau.bingo.utility.http.Response;
 import jakarta.validation.Valid;
@@ -11,15 +10,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
 
 /**
  * @author Manuel Aguilera / @aguileradev
  */
 @RestController
 @RequestMapping("/player")
+@CrossOrigin(origins = "http://localhost:4200")
 public class PlayerController {
     private final static Logger logger = LoggerFactory.getLogger(PlayerController.class);
 
